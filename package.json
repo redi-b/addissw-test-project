@@ -1,0 +1,38 @@
+{
+  "name": "addissw-test-project",
+  "version": "1.0.0",
+  "description": "addis software internship test project",
+  "homepage": "https://github.com/redi-b/addissw-test-project#readme",
+  "bugs": {
+    "url": "https://github.com/redi-b/addissw-test-project/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/redi-b/addissw-test-project.git"
+  },
+  "license": "ISC",
+  "author": "rediet",
+  "type": "commonjs",
+  "main": "./src/index.js",
+  "scripts": {
+    "dev": "webpack serve",
+    "build": "webpack --mode production"
+  },
+  "dependencies": {
+    "react": "^19.1.0",
+    "react-dom": "^19.1.0"
+  },
+  "devDependencies": {
+    "@types/react": "^19.1.8",
+    "@types/react-dom": "^19.1.6",
+    "css-loader": "^7.1.2",
+    "dotenv-webpack": "^8.1.1",
+    "html-webpack-plugin": "^5.6.3",
+    "style-loader": "^4.0.0",
+    "ts-loader": "^9.5.2",
+    "typescript": "^5.8.3",
+    "webpack": "^5.100.2",
+    "webpack-cli": "^6.0.1",
+    "webpack-dev-server": "^5.2.2"
+  }
+}
