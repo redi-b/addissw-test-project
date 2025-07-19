@@ -1,9 +1,9 @@
 import { createRoot } from "react-dom/client";
 
-import App from "./App";
+import App from "@/App";
 
-import "./styles/index.css";
-import { ThemeProvider } from "./contexts/ThemeContext";
+import "@/styles/index.css";
+import { ThemeProvider } from "@/contexts/ThemeContext";
 
 createRoot(document.getElementById("root")!).render(
   <ThemeProvider>

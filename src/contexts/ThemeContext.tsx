@@ -9,8 +9,9 @@ import {
 } from "react";
 
 import { ThemeProvider as EmotionThemeProvider } from "@emotion/react";
-import { lightTheme, darkTheme } from "../theme/config";
-import { ThemeStyles } from "../theme/styles";
+
+import { lightTheme, darkTheme } from "@/theme/config";
+import { ThemeStyles } from "@/theme/styles";
 
 interface ThemeContextType {
   themeMode: ThemeMode;

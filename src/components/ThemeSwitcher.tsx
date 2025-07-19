@@ -1,7 +1,8 @@
-import { ThemeMode, useThemeMode } from "../contexts/ThemeContext";
-import * as Dropdown from "./Dropdown";
 import { css, useTheme } from "@emotion/react";
 import { Sun, Moon, Monitor, Check } from "lucide-react";
+
+import { ThemeMode, useThemeMode } from "@/contexts/ThemeContext";
+import * as Dropdown from "@/components/Dropdown";
 
 const themeOptions = [
   { name: "System", value: "system", icon: <Monitor size={18} /> },
