@@ -125,6 +125,11 @@ const songsSlice = createSlice({
     },
 
     changePage: (state, { payload: page }: PayloadAction<number>) => {
+      if (page < 1) {
+        console.error("Page number cannot be less than 1. Defaulting to 1.");
+        page = 1;
+      }
+
       state.page = page;
       if (state.status.getSongs !== "loading") {
         state.status.getSongs = "idle";
@@ -132,6 +137,11 @@ const songsSlice = createSlice({
       }
     },
     changePerPage: (state, { payload: perPage }: PayloadAction<number>) => {
+      if (perPage < 1) {
+        console.error("Items per page cannot be less than 1. Defaulting to 10.");
+        perPage = 10;
+      }
+      
       state.perPage = perPage;
       if (state.status.getSongs !== "loading") {
         state.status.getSongs = "idle";

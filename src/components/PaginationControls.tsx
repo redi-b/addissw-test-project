@@ -98,7 +98,7 @@ const PaginationControls = () => {
     <PaginationContainer>
       <ArrowButton
         onClick={() => dispatch(changePage(currentPage - 1))}
-        disabled={currentPage === totalPages || isLoading || Boolean(error)}
+        disabled={currentPage === 1 || isLoading || Boolean(error)}
       >
         <ChevronLeft size={16} />
       </ArrowButton>
