@@ -97,8 +97,6 @@ function* handleDeleteSong({ payload: { id } }: PayloadAction<{ id: string }>) {
       // If the last song was deleted, we need to adjust the page
       const newPage = page > 1 ? page - 1 : 1;
       yield put(changePage(newPage));
-    } else {
-      yield put(getSongs());
     }
   } catch (err: any) {
     yield put(deleteSongFailure(err.message || "Failed to delete song"));
