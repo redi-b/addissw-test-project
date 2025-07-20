@@ -1,16 +1,34 @@
 import { PayloadAction } from "@reduxjs/toolkit";
-import { call, put, takeLatest } from "redux-saga/effects";
+import { call, put, takeEvery, takeLatest } from "redux-saga/effects";
 
 import {
   getSongs,
   getSongsSuccess,
   getSongsFailure,
+  getSong,
+  getSongSuccess,
+  getSongFailure,
+  createSong,
+  createSongSuccess,
+  createSongFailure,
+  updateSong,
+  updateSongSuccess,
+  updateSongFailure,
+  deleteSong,
+  deleteSongSuccess,
+  deleteSongFailure,
 } from "@/store/slices/songsSlice";
-import { fetchSongs } from "@/api/songs";
-import { SongsData } from "@/types";
+import {
+  postSong,
+  fetchSongById,
+  fetchSongs,
+  updateSong as updateSongApi,
+  deleteSong as deleteSongApi,
+} from "@/api/songs";
+import { CreateSongPayload, Song, SongsData, UpdateSongPayload } from "@/types";
 
 function* handleGetSongs({
-  payload: { page, perPage },
+  payload: { page = 1, perPage = 10 },
 }: PayloadAction<{ page: number; perPage: number }>) {
   try {
     const data: SongsData = yield call(fetchSongs, page, perPage);
@@ -20,6 +38,60 @@ function* handleGetSongs({
   }
 }
 
+function* handleGetSong({ payload: { id } }: PayloadAction<{ id: string }>) {
+  try {
+    const song: Song = yield call(fetchSongById, id);
+    yield put(getSongSuccess(song));
+  } catch (err: any) {
+    yield put(getSongFailure(err.message || "Unknown error"));
+  }
+}
+
+function* handleCreateSong({
+  payload: song,
+}: PayloadAction<CreateSongPayload>) {
+  try {
+    const newSong: Song = yield call(postSong, song);
+    yield put(createSongSuccess(newSong));
+  } catch (err: any) {
+    yield put(createSongFailure(err.message || "Failed to create song"));
+  }
+}
+
+function* handleUpdateSong({
+  payload: songInfo,
+}: PayloadAction<UpdateSongPayload>) {
+  if (!songInfo.id) {
+    yield put(updateSongFailure("Song ID is required for update"));
+    return;
+  }
+  const { title, artist, album, year } = songInfo;
+  if (!title && !artist && !album && typeof year !== "number") {
+    yield put(updateSongFailure("At least one field must be updated"));
+    return;
+  }
+
+  try {
+    const updatedSong: Song = yield call(updateSongApi, songInfo);
+    yield put(updateSongSuccess(updatedSong));
+  } catch (err: any) {
+    yield put(updateSongFailure(err.message || "Failed to update song"));
+  }
+}
+
+function* handleDeleteSong({ payload: { id } }: PayloadAction<{ id: string }>) {
+  try {
+    yield call(deleteSongApi, id);
+    yield put(deleteSongSuccess({ id }));
+  } catch (err: any) {
+    yield put(deleteSongFailure(err.message || "Failed to delete song"));
+  }
+}
+
 export default function* songsSaga() {
   yield takeLatest(getSongs.type, handleGetSongs);
+  yield takeLatest(getSong.type, handleGetSong);
+  yield takeLatest(createSong.type, handleCreateSong);
+  yield takeLatest(updateSong.type, handleUpdateSong);
+  yield takeEvery(deleteSong.type, handleDeleteSong);
 }
