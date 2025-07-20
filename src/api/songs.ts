@@ -10,6 +10,7 @@ export const fetchSongs = async (
   page = 1,
   perPage = 10
 ): Promise<SongsData> => {
+  await new Promise((resolve) => setTimeout(resolve, 1000)); // Simulate network delay
   const res = await fetch(
     `${BASE_API_URL}/songs?page=${page}&pageSize=${perPage}`
   );
@@ -38,6 +39,7 @@ export const fetchSongById = async (id: string): Promise<Song> => {
 };
 
 export const postSong = async (song: CreateSongPayload): Promise<Song> => {
+  await new Promise((resolve) => setTimeout(resolve, 1000)); // Simulate network delay
   const res = await fetch(`${BASE_API_URL}/songs`, {
     method: "POST",
     headers: {
@@ -63,6 +65,7 @@ export const postSong = async (song: CreateSongPayload): Promise<Song> => {
 export const updateSong = async (
   songInfo: UpdateSongPayload
 ): Promise<Song> => {
+  await new Promise((resolve) => setTimeout(resolve, 1000)); // Simulate network delay
   const res = await fetch(`${BASE_API_URL}/songs/${songInfo.id}`, {
     method: "PUT",
     headers: {
@@ -87,6 +90,7 @@ export const updateSong = async (
 };
 
 export const deleteSong = async (id: string): Promise<{ id: string }> => {
+  await new Promise((resolve) => setTimeout(resolve, 1000)); // Simulate network delay
   const res = await fetch(`${BASE_API_URL}/songs/${id}`, {
     method: "DELETE",
   });
