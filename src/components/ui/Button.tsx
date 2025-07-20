@@ -23,6 +23,9 @@ export const Button = styled.button<Props>(
       cursor: "pointer",
       fontSize: size === "sm" ? "0.875rem" : "1rem",
       transition: "background-color 0.2s",
+      display: "flex",
+      alignItems: "center",
+      justifyContent: "center",
       "&:hover": {
         backgroundColor: v.hover,
       },
