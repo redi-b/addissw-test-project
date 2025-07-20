@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import type { RootState } from "@/store";
 import { createSong } from "@/store/slices/songsSlice";
@@ -10,9 +10,6 @@ export default function CreateSongForm() {
   const dispatch = useDispatch();
   const status = useSelector(
     (state: RootState) => state.songs.status.createSong
-  );
-  const error = useSelector(
-    (state: RootState) => state.songs.errors.createSong
   );
 
   const [form, setForm] = useState<CreateSongPayload>({
@@ -37,14 +34,16 @@ export default function CreateSongForm() {
         year: form.year ? parseInt(form.year.toString(), 10) : undefined,
       };
       dispatch(createSong(payload));
-
-      if (status === "success") {
-        setForm({ title: "", artist: "", album: undefined, year: undefined });
-      }
     } catch (err) {
       console.error("Error creating song:", err);
     }
   };
+
+  useEffect(() => {
+    if (status === "success") {
+      setForm({ title: "", artist: "", album: undefined, year: undefined });
+    }
+  }, [status]);
 
   return (
     <Form onSubmit={handleSubmit}>
