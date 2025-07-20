@@ -27,15 +27,19 @@ const Input = styled.input`
   width: 100%;
   padding: 0.75rem 1rem;
   font-size: ${({ theme }) => theme.typography.fontSize.sm};
-  border: 1px solid ${({ theme }) => theme.colors.primary.focus};
+  border: 1px solid ${({ theme }) => theme.colors.border};
   border-radius: ${({ theme }) => theme.borderRadius.default};
-  background: ${({ theme }) => theme.colors.muted.background};
+  background: ${({ theme }) => theme.colors.input};
   color: ${({ theme }) => theme.colors.muted.foreground};
   transition: border-color 0.2s;
 
   &:focus {
     border-color: ${({ theme }) => theme.colors.primary.background};
     outline: none;
+  }
+
+  &::placeholder {
+    color: #aaa;
   }
 `;
 
@@ -99,10 +103,16 @@ export default function CreateSongForm() {
     e.preventDefault();
     try {
       let payload: CreateSongPayload = {
-        ...form,
+        title: form.title.trim(),
+        artist: form.artist.trim(),
+        album: form.album?.trim() || undefined,
         year: form.year ? parseInt(form.year.toString(), 10) : undefined,
       };
       dispatch(createSong(payload));
+
+      if (status === "success") {
+        setForm({ title: "", artist: "", album: undefined, year: undefined });
+      }
     } catch (err) {
       console.error("Error creating song:", err);
     }
@@ -115,6 +125,7 @@ export default function CreateSongForm() {
         <Input
           id="title"
           name="title"
+          placeholder="e.g. Sema"
           value={form.title}
           onChange={handleChange}
           required
@@ -126,6 +137,7 @@ export default function CreateSongForm() {
         <Input
           id="artist"
           name="artist"
+          placeholder="e.g. Rophnan"
           value={form.artist}
           onChange={handleChange}
           required
@@ -137,6 +149,7 @@ export default function CreateSongForm() {
         <Input
           id="album"
           name="album"
+          placeholder="e.g. Sost"
           value={form.album ?? ""}
           onChange={handleChange}
         />
@@ -148,6 +161,10 @@ export default function CreateSongForm() {
           id="year"
           name="year"
           type="number"
+          min={1900}
+          max={new Date().getFullYear()}
+          step="1"
+          placeholder="e.g. 2018"
           value={form.year ?? ""}
           onChange={handleChange}
         />
