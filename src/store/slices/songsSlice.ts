@@ -1,5 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 import {
+  filterReducers,
   pageParamReducers,
   songCreateReducers,
   songDeleteReducers,
@@ -22,16 +23,21 @@ type SongStatus = Record<
 type SongErrors = Record<SongOperation, string | null>;
 
 export interface SongState {
+  allSongs: Song[];
   songs: Song[];
   total: number;
   page?: number;
   perPage?: number;
+  search?: string;
+  sortBy?: keyof Omit<Song, "id">;
+  sortOrder?: "asc" | "desc";
   song: Song | null;
   status: SongStatus;
   errors: SongErrors;
 }
 
 const initialState: SongState = {
+  allSongs: [],
   songs: [],
   total: 0,
   song: null,
@@ -60,6 +66,7 @@ const songsSlice = createSlice({
     ...songUpdateReducers,
     ...songDeleteReducers,
     ...pageParamReducers,
+    ...filterReducers,
   },
 });
 
@@ -81,6 +88,9 @@ export const {
   deleteSongFailure,
   changePage,
   changePerPage,
+  setSearch,
+  setSort,
+  resetFilters
 } = songsSlice.actions;
 
 export default songsSlice.reducer;

@@ -1,6 +1,7 @@
 import { css } from "@emotion/react";
 import styled from "@emotion/styled";
 import AddSongModal from "./AddSongModal";
+import SongFilters from "./SongFilters";
 
 const HeaderContainer = styled.div`
   position: sticky;
@@ -18,12 +19,6 @@ const HeaderContent = styled.div`
   width: 100%;
   display: flex;
   flex-direction: column;
-`;
-
-const Container = styled.div`
-  max-width: 960px;
-  margin: 0 auto;
-  padding: ${({ theme }) => theme.spacing.lg};
 `;
 
 const Title = styled.h2`
@@ -46,7 +41,13 @@ export const Header = () => {
           <AddSongModal />
         </div>
 
-        {/* TODO: Add Filters Here */}
+        <div
+          css={css`
+            margin: auto;
+          `}
+        >
+          <SongFilters />
+        </div>
       </HeaderContent>
     </HeaderContainer>
   );

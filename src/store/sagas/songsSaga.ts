@@ -18,7 +18,8 @@ import {
   deleteSongSuccess,
   deleteSongFailure,
   changePage,
-  changePerPage,
+  setSort,
+  setSearch,
 } from "@/store/slices/songsSlice";
 import {
   postSong,
@@ -95,6 +96,10 @@ function* handleUpdateSong({
     const updatedSong: Song = yield call(updateSongApi, songInfo);
     yield put(updateSongSuccess({ updatedSong }));
     toast.success("Song updated successfully");
+
+    const { search, sortBy, sortOrder } = yield select((state: RootState) => state.songs);
+    if (search) yield put(setSearch(search));
+    if (sortBy || sortOrder) yield put(setSort({sortBy, sortOrder}));
   } catch (err: any) {
     yield put(updateSongFailure(err.message || "Failed to update song"));
     toast.error(err.message || "Failed to update song");
