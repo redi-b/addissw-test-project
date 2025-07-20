@@ -1,6 +1,8 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 import { CreateSongPayload, Song, SongsData, UpdateSongPayload } from "@/types";
+import { toast } from "sonner";
+import { updateToastToError, updateToastToSuccess } from "@/utils";
 
 type SongOperation =
   | "getSongs"
@@ -82,46 +84,88 @@ const songsSlice = createSlice({
       state.status.createSong = "loading";
       state.errors.createSong = null;
     },
-    createSongSuccess: (state, action: PayloadAction<Song>) => {
-      state.songs.push(action.payload);
+    createSongSuccess: (
+      state,
+      {
+        payload: { newSong, toastId },
+      }: PayloadAction<{ newSong: Song; toastId?: string | number }>
+    ) => {
+      state.songs.push(newSong);
       state.total += 1;
       state.status.createSong = "success";
+
+      updateToastToSuccess("Song created successfully", toastId);
     },
-    createSongFailure: (state, action: PayloadAction<string>) => {
+    createSongFailure: (
+      state,
+      {
+        payload: { message, toastId },
+      }: PayloadAction<{ message: string; toastId?: string | number }>
+    ) => {
       state.status.createSong = "error";
-      state.errors.createSong = action.payload;
+      state.errors.createSong = message;
+
+      updateToastToError(message, toastId);
     },
 
     updateSong: (state, action: PayloadAction<UpdateSongPayload>) => {
       state.status.updateSong = "loading";
       state.errors.updateSong = null;
     },
-    updateSongSuccess: (state, action: PayloadAction<Song>) => {
+    updateSongSuccess: (
+      state,
+      {
+        payload: { updatedSong, toastId },
+      }: PayloadAction<{ updatedSong: Song; toastId?: string | number }>
+    ) => {
       state.songs = state.songs.map((song) =>
-        song.id === action.payload.id ? action.payload : song
+        song.id === updatedSong.id ? updatedSong : song
       );
-      if (state.song && state.song.id === action.payload.id) {
-        state.song = action.payload;
+      if (state.song && state.song.id === updatedSong.id) {
+        state.song = updatedSong;
       }
       state.status.updateSong = "success";
+
+      updateToastToSuccess("Song updated successfully", toastId);
     },
-    updateSongFailure: (state, action: PayloadAction<string>) => {
+    updateSongFailure: (
+      state,
+      {
+        payload: { message, toastId },
+      }: PayloadAction<{ message: string; toastId?: string | number }>
+    ) => {
       state.status.updateSong = "error";
-      state.errors.updateSong = action.payload;
+      state.errors.updateSong = message;
+
+      updateToastToError(message, toastId);
     },
 
     deleteSong: (state, action: PayloadAction<{ id: string }>) => {
       state.status.deleteSong = "loading";
       state.errors.deleteSong = null;
     },
-    deleteSongSuccess: (state, action: PayloadAction<{ id: string }>) => {
-      state.songs = state.songs.filter((song) => song.id !== action.payload.id);
+    deleteSongSuccess: (
+      state,
+      {
+        payload: { id, toastId },
+      }: PayloadAction<{ id: string; toastId?: string | number }>
+    ) => {
+      state.songs = state.songs.filter((song) => song.id !== id);
       state.total -= 1;
       state.status.deleteSong = "success";
+
+      updateToastToSuccess("Song deleted successfully", toastId);
     },
-    deleteSongFailure: (state, action: PayloadAction<string>) => {
+    deleteSongFailure: (
+      state,
+      {
+        payload: { message, toastId },
+      }: PayloadAction<{ message: string; toastId?: string | number }>
+    ) => {
       state.status.deleteSong = "error";
-      state.errors.deleteSong = action.payload;
+      state.errors.deleteSong = message;
+
+      updateToastToError(message, toastId);
     },
 
     changePage: (state, { payload: page }: PayloadAction<number>) => {
@@ -138,10 +182,12 @@ const songsSlice = createSlice({
     },
     changePerPage: (state, { payload: perPage }: PayloadAction<number>) => {
       if (perPage < 1) {
-        console.error("Items per page cannot be less than 1. Defaulting to 10.");
+        console.error(
+          "Items per page cannot be less than 1. Defaulting to 10."
+        );
         perPage = 10;
       }
-      
+
       state.perPage = perPage;
       if (state.status.getSongs !== "loading") {
         state.status.getSongs = "idle";

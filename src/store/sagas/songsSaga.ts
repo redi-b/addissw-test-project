@@ -29,6 +29,7 @@ import {
 } from "@/api/songs";
 import { CreateSongPayload, Song, SongsData, UpdateSongPayload } from "@/types";
 import { RootState } from "@/store";
+import { toast } from "sonner";
 
 function* handleGetSongs() {
   try {
@@ -56,40 +57,58 @@ function* handleCreateSong({
   try {
     const newSong: Song = yield call(postSong, song);
 
-    yield put(createSongSuccess(newSong));
+    yield put(createSongSuccess({ newSong }));
     yield put(getSongs());
+    toast.success("Song created successfully");
   } catch (err: any) {
     yield put(createSongFailure(err.message || "Failed to create song"));
+    toast.error(err.message || "Failed to create song");
   }
 }
 
 function* handleUpdateSong({
   payload: songInfo,
 }: PayloadAction<UpdateSongPayload>) {
-  if (!songInfo.id) {
-    yield put(updateSongFailure("Song ID is required for update"));
-    return;
-  }
-  const { title, artist, album, year } = songInfo;
-  if (!title && !artist && !album && typeof year !== "number") {
-    yield put(updateSongFailure("At least one field must be updated"));
-    return;
-  }
-
   try {
+    if (!songInfo.id) {
+      throw new Error("Song ID is required for update");
+    }
+  
+    const currentSong: Song | undefined = yield select(
+      (state: RootState) => state.songs.songs.find((s) => s.id === songInfo.id)
+    );
+  
+    if (!currentSong) {
+      throw new Error("Song not found");
+    }
+  
+    const fieldsToCheck: (keyof Omit<Song, "id">)[] = ["title", "artist", "album", "year"];
+  
+    const isChanged = fieldsToCheck.some((field) => {
+      return songInfo[field] !== undefined && songInfo[field] !== currentSong[field];
+    });
+  
+    if (!isChanged) {
+      throw new Error("No changes detected in the song data");
+    }
+
     const updatedSong: Song = yield call(updateSongApi, songInfo);
-    yield put(updateSongSuccess(updatedSong));
+    yield put(updateSongSuccess({ updatedSong }));
+    toast.success("Song updated successfully");
   } catch (err: any) {
     yield put(updateSongFailure(err.message || "Failed to update song"));
+    toast.error(err.message || "Failed to update song");
   }
 }
 
 function* handleDeleteSong({ payload: { id } }: PayloadAction<{ id: string }>) {
+  const toastId = toast.loading("Deleting song...");
+
   try {
     yield call(deleteSongApi, id);
-    yield put(deleteSongSuccess({ id }));
+    yield put(deleteSongSuccess({ id, toastId: toastId }));
 
-    const { songs, page, perPage, total }: RootState["songs"] = yield select(
+    const { songs, page, total }: RootState["songs"] = yield select(
       (state: RootState) => state.songs
     );
 
@@ -99,7 +118,12 @@ function* handleDeleteSong({ payload: { id } }: PayloadAction<{ id: string }>) {
       yield put(changePage(newPage));
     }
   } catch (err: any) {
-    yield put(deleteSongFailure(err.message || "Failed to delete song"));
+    yield put(
+      deleteSongFailure({
+        message: err.message || "Failed to delete song",
+        toastId,
+      })
+    );
   }
 }
 
