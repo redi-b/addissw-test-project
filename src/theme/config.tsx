@@ -121,6 +121,10 @@ export const lightTheme = {
       active: "#E5E7EB",
       focus: "#F0F9FF", // light blue hint
     },
+    skeleton: {
+      base: "#E5E7EB", // gray-200,
+      highlight: "#F3F4F6", // gray-100,
+    },
 
     border: "#E5E7EB", // gray-200
     input: "#F9FAFB",
@@ -190,8 +194,13 @@ export const darkTheme = {
       active: "#475569",
       focus: "#0EA5E9", // cyan-500
     },
+    skeleton: {
+      base: "#4B5563", // slate-600, matches muted.hover
+      highlight: "#64748B", // slate-500, slightly lighter for shimmer
+    },
+
     border: "#475569",
-    input: "#334155",
+    input: "#2D3748",
     inputFocus: "#60A5FA", // blue-400
     ring: "#3B82F6", // blue-500
   },

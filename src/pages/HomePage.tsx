@@ -5,15 +5,22 @@ import styled from "@emotion/styled";
 import { RootState, AppDispatch } from "@/store";
 import { getSongs, changePage, changePerPage } from "@/store/slices/songsSlice";
 import SongCard from "@/components/SongCard";
-import { css } from "@emotion/react";
 import PaginationControls from "@/components/PaginationControls";
 import { useSearchParams } from "react-router";
 import { Header } from "@/components/Header";
+import SongCardSkeleton from "@/components/SongCardSkeleton";
+import ErrorCard from "@/components/ErrorCard";
 
 const Container = styled.div`
   max-width: 960px;
   margin: 0 auto;
   padding: ${({ theme }) => theme.spacing.lg};
+`;
+
+const CardList = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
 `;
 
 const HomePage = () => {
@@ -37,10 +44,12 @@ const HomePage = () => {
   }, []);
 
   useEffect(() => {
+    if (page && perPage) {
       let params: Record<string, string> = {};
       if (page !== 1) params.page = page.toString();
       if (perPage !== 10) params.perPage = perPage.toString();
       setSearchParams(params);
+    }
   }, [page, perPage]);
 
   useEffect(() => {
@@ -52,7 +61,17 @@ const HomePage = () => {
       <div>
         <Header />
         <Container>
-          <p>{isLoading ? "Loading songs..." : `Error: ${error}`}</p>
+          {isLoading ? (
+            <CardList>
+              {Array.from({ length: perPage ?? 10 }).map((_, index) => (
+                <SongCardSkeleton key={index} />
+              ))}
+            </CardList>
+          ) : error ? (
+            <ErrorCard message={error} onRetry={() => dispatch(getSongs())} />
+          ) : (
+            <p>Unexpected error occurred.</p>
+          )}
         </Container>
       </div>
     );
@@ -67,13 +86,7 @@ const HomePage = () => {
           <p>No songs found.</p>
         ) : (
           <div>
-            <div
-              css={css`
-                display: flex;
-                flex-direction: column;
-                gap: 1rem;
-              `}
-            >
+            <CardList>
               {songs.map((song) => (
                 <SongCard
                   song={song}
@@ -82,7 +95,7 @@ const HomePage = () => {
                   onDelete={(id) => console.log(`Delete song ${id}`)}
                 />
               ))}
-            </div>
+            </CardList>
             <PaginationControls />
           </div>
         )}
