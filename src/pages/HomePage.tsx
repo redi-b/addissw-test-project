@@ -1,30 +1,14 @@
-import { useEffect } from "react";
+import { useEffect, useLayoutEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import styled from "@emotion/styled";
 
 import { RootState, AppDispatch } from "@/store";
-import { getSongs, deleteSong } from "@/store/slices/songsSlice";
-import AddSongModal from "@/components/AddSongModal";
+import { getSongs, changePage, changePerPage } from "@/store/slices/songsSlice";
 import SongCard from "@/components/SongCard";
 import { css } from "@emotion/react";
-
-const HeaderContainer = styled.div`
-  position: sticky;
-  top: 0;
-  margin-top: ${({ theme }) => theme.spacing.md};
-  padding: ${({ theme }) => theme.spacing.md};
-  background: ${({ theme }) => theme.colors.background};
-  z-index: 10;
-`;
-
-const HeaderContent = styled.div`
-  max-width: 960px;
-  margin: 0 auto;
-  padding: ${({ theme }) => theme.spacing.md} 0;
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-`;
+import PaginationControls from "@/components/PaginationControls";
+import { useSearchParams } from "react-router";
+import { Header } from "@/components/Header";
 
 const Container = styled.div`
   max-width: 960px;
@@ -32,68 +16,74 @@ const Container = styled.div`
   padding: ${({ theme }) => theme.spacing.lg};
 `;
 
-const Title = styled.h2`
-  font-size: 1.5rem;
-  font-weight: 600;
-`;
-
 const HomePage = () => {
   const dispatch = useDispatch<AppDispatch>();
-  const { songs, status, errors } = useSelector(
+  const { songs, page, perPage } = useSelector(
     (state: RootState) => state.songs
   );
+  const isLoading = useSelector(
+    (state: RootState) => state.songs.status.getSongs === "loading"
+  );
+  const error = useSelector((state: RootState) => state.songs.errors.getSongs);
 
-  const page = Number(1);
-  const perPage = Number(10);
+  const [searchParams, setSearchParams] = useSearchParams();
+
+  useLayoutEffect(() => {
+    const pageParam = Number(searchParams.get("page")) || 1;
+    const perPageParam = Number(searchParams.get("perPage")) || 10;
+
+    if (!isNaN(pageParam)) dispatch(changePage(pageParam));
+    if (!isNaN(perPageParam)) dispatch(changePerPage(perPageParam));
+  }, []);
 
   useEffect(() => {
-    dispatch(getSongs({ page, perPage }));
+      let params: Record<string, string> = {};
+      if (page !== 1) params.page = page.toString();
+      if (perPage !== 10) params.perPage = perPage.toString();
+      setSearchParams(params);
+  }, [page, perPage]);
+
+  useEffect(() => {
+    dispatch(getSongs());
   }, [dispatch, page, perPage]);
 
-  const isLoading = status.getSongs === "loading";
-  const error = errors.getSongs;
+  if (isLoading || error) {
+    return (
+      <div>
+        <Header />
+        <Container>
+          <p>{isLoading ? "Loading songs..." : `Error: ${error}`}</p>
+        </Container>
+      </div>
+    );
+  }
 
   return (
     <div>
-      <HeaderContainer>
-        <HeaderContent>
-          <div
-            css={css`
-              display: flex;
-              justify-content: space-between;
-              align-items: center;
-            `}
-          >
-            <Title>Songs</Title>
-            <AddSongModal />
-          </div>
-
-          {/* TODO: Add Filters Here */}
-        </HeaderContent>
-      </HeaderContainer>
+      <Header />
 
       <Container>
-        {isLoading && <p>Loading songs...</p>}
-        {error && <p style={{ color: "red" }}>Error: {error}</p>}
-
         {songs.length === 0 ? (
           <p>No songs found.</p>
         ) : (
-          <div
-            css={css`
-              display: flex;
-              flex-direction: column;
-              gap: 1rem;
-            `}
-          >
-            {songs.map((song) => (
-              <SongCard
-                song={song}
-                key={song.id}
-                onEdit={(id) => console.log(`Edit song ${id}`)}
-                onDelete={(id) => console.log(`Delete song ${id}`)}
-              />
-            ))}
+          <div>
+            <div
+              css={css`
+                display: flex;
+                flex-direction: column;
+                gap: 1rem;
+              `}
+            >
+              {songs.map((song) => (
+                <SongCard
+                  song={song}
+                  key={song.id}
+                  onEdit={(id) => console.log(`Edit song ${id}`)}
+                  onDelete={(id) => console.log(`Delete song ${id}`)}
+                />
+              ))}
+            </div>
+            <PaginationControls />
           </div>
         )}
       </Container>

@@ -18,6 +18,8 @@ type SongErrors = Record<SongOperation, string | null>;
 interface SongState {
   songs: Song[];
   total: number;
+  page?: number;
+  perPage?: number;
   song: Song | null;
   status: SongStatus;
   errors: SongErrors;
@@ -26,6 +28,8 @@ interface SongState {
 const initialState: SongState = {
   songs: [],
   total: 0,
+  page: undefined,
+  perPage: undefined,
   song: null,
   status: {
     getSongs: "idle",
@@ -47,10 +51,7 @@ const songsSlice = createSlice({
   name: "songs",
   initialState,
   reducers: {
-    getSongs: (
-      state,
-      action: PayloadAction<{ page?: number; perPage?: number }>
-    ) => {
+    getSongs: (state) => {
       state.status.getSongs = "loading";
       state.errors.getSongs = null;
     },
@@ -122,6 +123,21 @@ const songsSlice = createSlice({
       state.status.deleteSong = "error";
       state.errors.deleteSong = action.payload;
     },
+
+    changePage: (state, { payload: page }: PayloadAction<number>) => {
+      state.page = page;
+      if (state.status.getSongs !== "loading") {
+        state.status.getSongs = "idle";
+        state.errors.getSongs = null;
+      }
+    },
+    changePerPage: (state, { payload: perPage }: PayloadAction<number>) => {
+      state.perPage = perPage;
+      if (state.status.getSongs !== "loading") {
+        state.status.getSongs = "idle";
+        state.errors.getSongs = null;
+      }
+    },
   },
 });
 
@@ -141,6 +157,8 @@ export const {
   deleteSong,
   deleteSongSuccess,
   deleteSongFailure,
+  changePage,
+  changePerPage,
 } = songsSlice.actions;
 
 export default songsSlice.reducer;

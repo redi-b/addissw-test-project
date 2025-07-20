@@ -1,5 +1,5 @@
 import { PayloadAction } from "@reduxjs/toolkit";
-import { call, put, takeEvery, takeLatest } from "redux-saga/effects";
+import { call, put, select, takeEvery, takeLatest } from "redux-saga/effects";
 
 import {
   getSongs,
@@ -17,6 +17,8 @@ import {
   deleteSong,
   deleteSongSuccess,
   deleteSongFailure,
+  changePage,
+  changePerPage,
 } from "@/store/slices/songsSlice";
 import {
   postSong,
@@ -26,11 +28,12 @@ import {
   deleteSong as deleteSongApi,
 } from "@/api/songs";
 import { CreateSongPayload, Song, SongsData, UpdateSongPayload } from "@/types";
+import { RootState } from "@/store";
 
-function* handleGetSongs({
-  payload: { page = 1, perPage = 10 },
-}: PayloadAction<{ page: number; perPage: number }>) {
+function* handleGetSongs() {
   try {
+    const { page, perPage } = yield select((state: RootState) => state.songs);
+
     const data: SongsData = yield call(fetchSongs, page, perPage);
     yield put(getSongsSuccess(data));
   } catch (err: any) {
@@ -52,7 +55,9 @@ function* handleCreateSong({
 }: PayloadAction<CreateSongPayload>) {
   try {
     const newSong: Song = yield call(postSong, song);
+
     yield put(createSongSuccess(newSong));
+    yield put(getSongs());
   } catch (err: any) {
     yield put(createSongFailure(err.message || "Failed to create song"));
   }
@@ -83,6 +88,7 @@ function* handleDeleteSong({ payload: { id } }: PayloadAction<{ id: string }>) {
   try {
     yield call(deleteSongApi, id);
     yield put(deleteSongSuccess({ id }));
+    yield put(getSongs());
   } catch (err: any) {
     yield put(deleteSongFailure(err.message || "Failed to delete song"));
   }
