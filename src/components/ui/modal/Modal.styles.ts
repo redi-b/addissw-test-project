@@ -33,7 +33,7 @@ export const Overlay = styled(Dialog.Overlay)`
 `;
 
 export const Content = styled(Dialog.Content)`
-  background: ${({ theme }) => theme.colors.background};
+  background: ${({ theme }) => theme.colors.popover.background};
   border-radius: ${({ theme }) => theme.borderRadius.lg};
   box-shadow: ${({ theme }) => theme.shadows.lg};
   padding: ${({ theme }) => theme.spacing.lg};

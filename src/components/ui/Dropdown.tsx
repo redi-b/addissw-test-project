@@ -33,8 +33,8 @@ export const Content = styled(DropdownMenu.Content)`
   flex-direction: column;
   gap: ${({ theme }) => theme.spacing.xs};
   min-width: 200px;
-  background-color: ${({ theme }) => theme.colors.popover};
-  color: ${({ theme }) => theme.colors.popoverForeground};
+  background-color: ${({ theme }) => theme.colors.popover.background};
+  color: ${({ theme }) => theme.colors.popover.foreground};
   border-radius: ${({ theme }) => theme.borderRadius.default};
   padding: ${({ theme }) => theme.spacing.sm};
   box-shadow: ${({ theme }) => theme.shadows.lg};
@@ -84,7 +84,7 @@ export const Separator = styled(DropdownMenu.Separator)`
 `;
 
 export const Arrow = styled(DropdownMenu.Arrow)`
-  fill: ${({ theme }) => theme.colors.popover};
+  fill: ${({ theme }) => theme.colors.popover.background};
 `;
 
 export const RightSlot = styled("div")`

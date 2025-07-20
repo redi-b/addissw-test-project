@@ -65,15 +65,6 @@ export const lightTheme = {
   colors: {
     background: "#FAFAFA",
     foreground: "#1A1A1A",
-    card: "#FFFFFF",
-    cardForeground: "#1A1A1A",
-    cardHover: "#F5F5F5",
-    cardActive: "#E5E7EB",
-
-    popover: "#FFFFFF",
-    popoverForeground: "#1A1A1A",
-    popoverHover: "#F5F5F5",
-    popoverActive: "#E5E7EB",
 
     primary: {
       background: "#6366F1", // indigo-500
@@ -90,7 +81,7 @@ export const lightTheme = {
       focus: "#BFDBFE", // blue-200
     },
     tertiary: {
-      background: "#FDE68A", // yellow-200 (warm and fresh)
+      background: "#FDE68A", // yellow-200
       foreground: "#78350F", // amber-900
       hover: "#FCD34D", // yellow-300
       active: "#FBBF24", // yellow-400
@@ -116,8 +107,23 @@ export const lightTheme = {
       active: "#991B1B", // red-800
       focus: "#FEE2E2", // red-100
     },
+    card: {
+      background: "#F8FAFC", // slate-50
+      foreground: "#0F172A", // slate-900
+      hover: "#F1F5F9", // slate-100
+      active: "#E2E8F0", // slate-200
+      focus: "#DBEAFE", // blue-100
+    },
+    popover: {
+      background: "#FFFFFF",
+      foreground: "#1A1A1A",
+      hover: "#F9FAFB",
+      active: "#E5E7EB",
+      focus: "#F0F9FF", // light blue hint
+    },
+
     border: "#E5E7EB", // gray-200
-    input: "#E5E7EB",
+    input: "#F9FAFB",
     inputFocus: "#A3BFFA", // light blue
     ring: "#4B6EA8", // muted blue
   },
@@ -128,15 +134,6 @@ export const darkTheme = {
   colors: {
     background: "#0F172A", // slate-900
     foreground: "#F1F5F9", // slate-100
-    card: "#1E293B", // slate-800
-    cardForeground: "#F1F5F9",
-    cardHover: "#334155", // slate-700
-    cardActive: "#475569", // slate-600
-
-    popover: "#1E293B",
-    popoverForeground: "#F1F5F9",
-    popoverHover: "#334155",
-    popoverActive: "#475569",
 
     primary: {
       background: "#8B5CF6", // violet-500
@@ -160,10 +157,10 @@ export const darkTheme = {
       focus: "#FBBF24", // yellow-400
     },
     muted: {
-      background: "#1E293B", // slate-800
-      foreground: "#94A3B8", // slate-400
-      hover: "#334155", // slate-700
-      active: "#475569", // slate-600
+      background: "#374151",
+      foreground: "#CBD5E1", // slate-300
+      hover: "#4B5563",
+      active: "#64748B", // slate-500
     },
     accent: {
       background: "#164E63", // cyan-900
@@ -179,7 +176,21 @@ export const darkTheme = {
       active: "#B91C1C", // red-600
       focus: "#FEE2E2", // red-100
     },
-    border: "#1E293B",
+    card: {
+      background: "#1E293B", // slate-800
+      foreground: "#E2E8F0", // slate-200
+      hover: "#273449", // slightly lighter for hover
+      active: "#334155", // slate-700
+      focus: "#3B82F6", // blue-500
+    },
+    popover: {
+      background: "#1E293B",
+      foreground: "#F1F5F9",
+      hover: "#334155",
+      active: "#475569",
+      focus: "#0EA5E9", // cyan-500
+    },
+    border: "#475569",
     input: "#334155",
     inputFocus: "#60A5FA", // blue-400
     ring: "#3B82F6", // blue-500
