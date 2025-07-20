@@ -1,11 +1,17 @@
-import ThemeSwitch from "@/components/ThemeSwitcher";
+import { BrowserRouter, Route, Routes } from "react-router";
+
+import AppLayout from "@/layouts/AppLayout";
+import HomePage from "@/pages/HomePage";
 
 const App = () => {
   return (
-    <div>
-      <h1>Song Manager</h1>
-      <ThemeSwitch />
-    </div>
+    <BrowserRouter>
+      <Routes>
+        <Route element={<AppLayout />}>
+          <Route path="/" element={<HomePage />} />
+        </Route>
+      </Routes>
+    </BrowserRouter>
   );
 };
 
