@@ -27,6 +27,7 @@ export const Overlay = styled(Dialog.Overlay)`
   position: fixed;
   inset: 0;
   animation: ${fadeIn} 200ms ease-out;
+  z-index: 9999;
   &[data-state="closed"] {
     animation: ${fadeOut} 150ms ease-in;
   }
@@ -44,6 +45,7 @@ export const Content = styled(Dialog.Content)`
   max-width: 500px;
   transform: translate(-50%, -50%);
   animation: ${scaleIn} 200ms ease-out;
+  z-index: 9999;
   &[data-state="closed"] {
     animation: ${scaleOut} 150ms ease-in;
   }

@@ -14,6 +14,7 @@ const HeaderContainer = styled.div`
   margin-top: ${({ theme }) => theme.spacing.md};
   padding: ${({ theme }) => theme.spacing.md};
   background: ${({ theme }) => theme.colors.background};
+  z-index: 10;
 `;
 
 const HeaderContent = styled.div`

@@ -42,7 +42,12 @@ const ThemeSwitcher = () => {
       </Dropdown.Trigger>
 
       <Dropdown.Portal>
-        <Dropdown.Content sideOffset={5}>
+        <Dropdown.Content
+          sideOffset={5}
+          css={css`
+            z-index: 50;
+          `}
+        >
           {themeOptions.map((option) => {
             const isSelected = themeMode === option.value;
 
