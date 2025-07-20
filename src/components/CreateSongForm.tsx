@@ -1,82 +1,10 @@
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import styled from "@emotion/styled";
 import type { RootState } from "@/store";
 import { createSong } from "@/store/slices/songsSlice";
 import type { CreateSongPayload } from "@/types";
-
-const Form = styled.form`
-  margin: ${({ theme }) => theme.spacing.xs} auto;
-  padding: ${({ theme }) => theme.spacing.sm};
-  border-radius: ${({ theme }) => theme.borderRadius.xl};
-`;
-
-const FormGroup = styled.div`
-  margin-bottom: ${({ theme }) => theme.spacing.md};
-`;
-
-const Label = styled.label`
-  display: block;
-  font-size: ${({ theme }) => theme.typography.fontSize.sm};
-  color: ${({ theme }) => theme.colors.muted.foreground};
-  margin-bottom: ${({ theme }) => theme.spacing.xs};
-  font-weight: 500;
-`;
-
-const Input = styled.input`
-  width: 100%;
-  padding: 0.75rem 1rem;
-  font-size: ${({ theme }) => theme.typography.fontSize.sm};
-  border: 1px solid ${({ theme }) => theme.colors.border};
-  border-radius: ${({ theme }) => theme.borderRadius.default};
-  background: ${({ theme }) => theme.colors.input};
-  color: ${({ theme }) => theme.colors.muted.foreground};
-  transition: border-color 0.2s;
-
-  &:focus {
-    border-color: ${({ theme }) => theme.colors.primary.background};
-    outline: none;
-  }
-
-  &::placeholder {
-    color: #aaa;
-  }
-`;
-
-const Button = styled.button`
-  width: 100%;
-  padding: 0.75rem 1rem;
-  font-size: ${({ theme }) => theme.typography.fontSize.sm};
-  background-color: ${({ theme }) => theme.colors.primary.background};
-  color: ${({ theme }) => theme.colors.primary.foreground};
-  border: none;
-  border-radius: ${({ theme }) => theme.borderRadius.default};
-  cursor: pointer;
-  transition: background-color 0.2s;
-
-  &:hover {
-    background-color: ${({ theme }) => theme.colors.primary.hover};
-  }
-
-  &:disabled {
-    background-color: ${({ theme }) => theme.colors.muted.background};
-    cursor: not-allowed;
-  }
-`;
-
-const Status = styled.div`
-  margin-top: ${({ theme }) => theme.spacing.md};
-  font-size: ${({ theme }) => theme.typography.fontSize.sm};
-  text-align: center;
-
-  &.success {
-    color: ${({ theme }) => theme.colors.accent.foreground};
-  }
-
-  &.error {
-    color: ${({ theme }) => theme.colors.destructive.background};
-  }
-`;
+import { LoaderCircle } from "lucide-react";
+import { Button, Form, FormGroup, Input, Label } from "@/components/Form";
 
 export default function CreateSongForm() {
   const dispatch = useDispatch();
@@ -171,15 +99,9 @@ export default function CreateSongForm() {
       </FormGroup>
 
       <Button type="submit" disabled={status === "loading"}>
-        {status === "loading" ? "Creating..." : "Create Song"}
+          {status === "loading" && <LoaderCircle size={16} className="animate-spin" />}
+          <span>{status === "loading" ? "Creating..." : "Create Song"}</span>
       </Button>
-
-      {status === "success" && (
-        <Status className="success">Song created successfully!</Status>
-      )}
-      {status === "error" && (
-        <Status className="error">{error || "Something went wrong."}</Status>
-      )}
     </Form>
   );
 }
