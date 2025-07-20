@@ -3,6 +3,11 @@ import styled from "@emotion/styled";
 import { Edit2, Trash2 } from "lucide-react";
 import { Button } from "@/components/ui/Button";
 import { Song } from "@/types";
+import { AppDispatch } from "@/store";
+import { useDispatch } from "react-redux";
+import { Modal } from "./ui/modal/Modal";
+import EditSongForm from "./EditSongForm";
+import { deleteSong } from "@/store/slices/songsSlice";
 
 type SongCardProps = {
   song: Song;
@@ -71,7 +76,10 @@ const Actions = styled.div`
 `;
 
 export default function SongCard({ song }: SongCardProps) {
+  const dispatch = useDispatch<AppDispatch>();
+
   const [isHovered, setIsHovered] = useState(false);
+  const [isEditing, setIsEditing] = useState(false);
 
   return (
     <Card
@@ -92,7 +100,8 @@ export default function SongCard({ song }: SongCardProps) {
           <Button
             variant="secondary"
             size="md"
-            onClick={() => {}}
+            onClick={() => setIsEditing(true)}
+            disabled={isEditing}
             title="Edit song"
           >
             <Edit2 size={18} />
@@ -100,13 +109,21 @@ export default function SongCard({ song }: SongCardProps) {
           <Button
             variant="destructive"
             size="md"
-            onClick={() => {}}
+            onClick={() => dispatch(deleteSong({ id: song.id }))}
             title="Delete song"
           >
             <Trash2 size={18} />
           </Button>
         </Actions>
       )}
+      <Modal
+        open={isEditing}
+        onOpenChange={setIsEditing}
+        title="Edit Song"
+        showCloseButton
+      >
+        <EditSongForm song={song} />
+      </Modal>
     </Card>
   );
 }
