@@ -1,5 +1,7 @@
+import { RootState } from "@/store";
 import styled from "@emotion/styled";
 import { Music } from "lucide-react";
+import { useSelector } from "react-redux";
 
 const NoSongsContainer = styled.div`
   display: flex;
@@ -42,9 +44,16 @@ const NoSongsMessage = styled.p`
   font-size: ${({ theme }) => theme.typography.fontSize.sm};
   color: ${({ theme }) => theme.colors.muted.foreground};
   margin: 0.5rem 0 0;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  max-width: 300px;
 `;
 
 export default function NoSongs() {
+  const search = useSelector((state: RootState) => state.songs.search);
+
+  const isSearching = search && search.trim() !== "";
+  
   return (
     <NoSongsContainer role="alert">
       <IconWrapper>
@@ -53,7 +62,9 @@ export default function NoSongs() {
       <NoSongsContent>
         <NoSongsTitle>No Songs Found</NoSongsTitle>
         <NoSongsMessage>
-          Looks like your song collection is empty. Add a new song to get started!
+          {isSearching
+            ? `No songs match your search for "${search}".`
+            : "Looks like your song collection is empty. Add a new song to get started!"}
         </NoSongsMessage>
       </NoSongsContent>
     </NoSongsContainer>
