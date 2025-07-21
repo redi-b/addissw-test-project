@@ -8,7 +8,7 @@ if (!BASE_API_URL) {
 
 export const fetchSongs = async (
   page = 1,
-  perPage = 10
+  perPage = 5
 ): Promise<SongsData> => {
   const res = await fetch(
     `${BASE_API_URL}/songs?page=${page}&pageSize=${perPage}`

@@ -38,7 +38,7 @@ const HomePage = () => {
 
   useLayoutEffect(() => {
     const pageParam = Number(searchParams.get("page")) || 1;
-    const perPageParam = Number(searchParams.get("perPage")) || 10;
+    const perPageParam = Number(searchParams.get("perPage")) || 5;
 
     if (!isNaN(pageParam)) dispatch(changePage(pageParam));
     if (!isNaN(perPageParam)) dispatch(changePerPage(perPageParam));
@@ -48,7 +48,7 @@ const HomePage = () => {
     if (page && perPage) {
       let params: Record<string, string> = {};
       if (page !== 1) params.page = page.toString();
-      if (perPage !== 10) params.perPage = perPage.toString();
+      if (perPage !== 5) params.perPage = perPage.toString();
       setSearchParams(params);
     }
   }, [page, perPage]);
@@ -64,7 +64,7 @@ const HomePage = () => {
         <Container>
           {isLoading ? (
             <CardList>
-              {Array.from({ length: perPage ?? 10 }).map((_, index) => (
+              {Array.from({ length: perPage ?? 5 }).map((_, index) => (
                 <SongCardSkeleton key={index} />
               ))}
             </CardList>

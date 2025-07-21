@@ -149,8 +149,8 @@ export const pageParamReducers = {
     { payload: perPage }: PayloadAction<number>
   ) => {
     if (perPage < 1) {
-      console.error("Items per page cannot be less than 1. Defaulting to 10.");
-      perPage = 10;
+      console.error("Items per page cannot be less than 1. Defaulting to 5.");
+      perPage = 5;
     }
 
     state.perPage = perPage;

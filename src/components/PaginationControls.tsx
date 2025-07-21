@@ -51,7 +51,7 @@ const Dots = styled.span`
 const PaginationControls = () => {
   const {
     page: currentPage = 1,
-    perPage = 10,
+    perPage = 5,
     total: totalSongs,
   } = useSelector((state: RootState) => state.songs);
   const isLoading = useSelector(
