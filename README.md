@@ -117,7 +117,7 @@ AI tools were used to assist with parts of the UI design and development process
 
 ## Deployment
 - **Frontend**: Hosted on Netlify at [Live Site](https://rediet-addissw.netlify.app)
-- **Backend**: Deployed on Heroku
+- **Backend**: Deployed on Heroku ([Github Repository](https://github.com/redi-b/addissw-backend))
 
 ## Project Structure
 ```
