@@ -18,6 +18,41 @@ const Navbar = styled.nav`
   align-items: center;
   padding: ${({ theme }) => `${theme.spacing.md} ${theme.spacing.lg}`};
   border-bottom: 1px solid ${({ theme }) => theme.colors.border};
+
+  @media (max-width: ${({ theme }) => theme.breakpoints.sm}) {
+    gap: ${({ theme }) => theme.spacing.sm};
+    padding: ${({ theme }) => `${theme.spacing.md}`};
+  }
+`;
+
+const Brand = styled.div`
+  display: flex;
+  align-items: center;
+  gap: ${({ theme }) => theme.spacing.md};
+
+  h1 {
+    font-size: ${({ theme }) => theme.typography.fontSize["2xl"]};
+    font-weight: ${({ theme }) => theme.typography.fontWeight.semibold};
+    gap: ${({ theme }) => theme.spacing.sm};
+
+    @media (max-width: ${({ theme }) => theme.breakpoints.sm}) {
+      font-size: ${({ theme }) => theme.typography.fontSize.xl};
+    }
+  }
+
+  svg {
+    width: 32px;
+    height: 32px;
+
+    @media (max-width: ${({ theme }) => theme.breakpoints.sm}) {
+      width: 24px;
+      height: 24px;
+    }
+  }
+
+  @media (max-width: ${({ theme }) => theme.breakpoints.sm}) {
+    gap: ${({ theme }) => theme.spacing.sm};
+  }
 `;
 
 const AppLayout = () => {
@@ -27,16 +62,10 @@ const AppLayout = () => {
   return (
     <Wrapper>
       <Navbar>
-        <div
-          css={css`
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-          `}
-        >
-          <Music size={32} />
+        <Brand>
+          <Music />
           <h1>Song Manager</h1>
-        </div>
+        </Brand>
         <ThemeSwitcher />
       </Navbar>
       <Outlet />

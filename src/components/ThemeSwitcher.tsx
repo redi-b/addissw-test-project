@@ -22,7 +22,7 @@ const ThemeSwitcher = () => {
         <button
           css={css`
             cursor: pointer;
-            padding: ${theme.spacing.sm};
+            padding: ${theme.spacing.sm} ${theme.spacing.md};
             background-color: ${theme.colors.secondary.background};
             color: ${theme.colors.secondary.foreground};
             border: none;
@@ -31,6 +31,11 @@ const ThemeSwitcher = () => {
             align-items: center;
             justify-content: center;
             outline: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: ${theme.spacing.sm};
+            font-weight: 700;
 
             &:hover {
               background-color: ${theme.colors.secondary.hover};
@@ -38,6 +43,7 @@ const ThemeSwitcher = () => {
           `}
         >
           {activeIcon}
+          <span>Select Theme</span>
         </button>
       </Dropdown.Trigger>
 
