@@ -74,21 +74,28 @@ function* handleUpdateSong({
     if (!songInfo.id) {
       throw new Error("Song ID is required for update");
     }
-  
-    const currentSong: Song | undefined = yield select(
-      (state: RootState) => state.songs.songs.find((s) => s.id === songInfo.id)
+
+    const currentSong: Song | undefined = yield select((state: RootState) =>
+      state.songs.songs.find((s) => s.id === songInfo.id)
     );
-  
+
     if (!currentSong) {
       throw new Error("Song not found");
     }
-  
-    const fieldsToCheck: (keyof Omit<Song, "id">)[] = ["title", "artist", "album", "year"];
-  
+
+    const fieldsToCheck: (keyof Omit<Song, "id">)[] = [
+      "title",
+      "artist",
+      "album",
+      "year",
+    ];
+
     const isChanged = fieldsToCheck.some((field) => {
-      return songInfo[field] !== undefined && songInfo[field] !== currentSong[field];
+      return (
+        songInfo[field] !== undefined && songInfo[field] !== currentSong[field]
+      );
     });
-  
+
     if (!isChanged) {
       throw new Error("No changes detected in the song data");
     }
@@ -97,9 +104,11 @@ function* handleUpdateSong({
     yield put(updateSongSuccess({ updatedSong }));
     toast.success("Song updated successfully");
 
-    const { search, sortBy, sortOrder } = yield select((state: RootState) => state.songs);
+    const { search, sortBy, sortOrder } = yield select(
+      (state: RootState) => state.songs
+    );
     if (search) yield put(setSearch(search));
-    if (sortBy || sortOrder) yield put(setSort({sortBy, sortOrder}));
+    if (sortBy || sortOrder) yield put(setSort({ sortBy, sortOrder }));
   } catch (err: any) {
     yield put(updateSongFailure(err.message || "Failed to update song"));
     toast.error(err.message || "Failed to update song");
@@ -118,9 +127,15 @@ function* handleDeleteSong({ payload: { id } }: PayloadAction<{ id: string }>) {
     );
 
     if (songs.length === 0 && total > 0 && page) {
-      // If the last song was deleted, we need to adjust the page
+      // If the last song in a page was deleted, 
+      // we need to adjust the page
       const newPage = page > 1 ? page - 1 : 1;
-      yield put(changePage(newPage));
+
+      if (newPage !== page) {
+        yield put(changePage(newPage));
+      } else {
+        yield put(getSongs());
+      }
     }
   } catch (err: any) {
     yield put(
