@@ -20,6 +20,9 @@ import {
   changePage,
   setSort,
   setSearch,
+  seedSongs,
+  seedSongsSuccess,
+  seedSongsFailure,
 } from "@/store/slices/songsSlice";
 import {
   postSong,
@@ -27,6 +30,7 @@ import {
   fetchSongs,
   updateSong as updateSongApi,
   deleteSong as deleteSongApi,
+  seedSongs as seedSongsApi,
 } from "@/api/songs";
 import { CreateSongPayload, Song, SongsData, UpdateSongPayload } from "@/types";
 import { RootState } from "@/store";
@@ -127,7 +131,7 @@ function* handleDeleteSong({ payload: { id } }: PayloadAction<{ id: string }>) {
     );
 
     if (songs.length === 0 && total > 0 && page) {
-      // If the last song in a page was deleted, 
+      // If the last song in a page was deleted,
       // we need to adjust the page
       const newPage = page > 1 ? page - 1 : 1;
 
@@ -147,10 +151,29 @@ function* handleDeleteSong({ payload: { id } }: PayloadAction<{ id: string }>) {
   }
 }
 
+export function* handleSeedSongs() {
+  const toastId = toast.loading("Seeding songs...");
+
+  try {
+    yield call(seedSongsApi);
+
+    yield put(seedSongsSuccess({ toastId }));
+    yield put(getSongs());
+  } catch (err: any) {
+    yield put(
+      seedSongsFailure({
+        message: err.message || "Failed to seed songs",
+        toastId,
+      })
+    );
+  }
+}
+
 export default function* songsSaga() {
   yield takeLatest(getSongs.type, handleGetSongs);
   yield takeLatest(getSong.type, handleGetSong);
   yield takeLatest(createSong.type, handleCreateSong);
   yield takeLatest(updateSong.type, handleUpdateSong);
   yield takeEvery(deleteSong.type, handleDeleteSong);
+  yield takeLatest(seedSongs.type, handleSeedSongs);
 }

@@ -6,10 +6,7 @@ if (!BASE_API_URL) {
   throw new Error("BASE_API_URL is not defined in the environment variables");
 }
 
-export const fetchSongs = async (
-  page = 1,
-  perPage = 5
-): Promise<SongsData> => {
+export const fetchSongs = async (page = 1, perPage = 5): Promise<SongsData> => {
   const res = await fetch(
     `${BASE_API_URL}/songs?page=${page}&pageSize=${perPage}`
   );
@@ -101,4 +98,15 @@ export const deleteSong = async (id: string): Promise<{ id: string }> => {
   }
 
   return { id };
+};
+
+export const seedSongs = async (): Promise<void> => {
+  const res = await fetch(`${BASE_API_URL}/songs/seed`, {
+    method: "POST",
+  });
+
+  if (!res.ok) {
+    const data = await res.json();
+    throw new Error(data.message || "Failed to seed songs");
+  }
 };

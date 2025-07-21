@@ -5,6 +5,7 @@ import {
   songCreateReducers,
   songDeleteReducers,
   songGetReducers,
+  songSeedReducers,
   songUpdateReducers,
 } from "./songs.reducers";
 import { Song } from "@/types";
@@ -14,7 +15,8 @@ type SongOperation =
   | "getSong"
   | "createSong"
   | "updateSong"
-  | "deleteSong";
+  | "deleteSong"
+  | "seedSongs";
 
 type SongStatus = Record<
   SongOperation,
@@ -47,6 +49,7 @@ const initialState: SongState = {
     createSong: "idle",
     updateSong: "idle",
     deleteSong: "idle",
+    seedSongs: "idle",
   },
   errors: {
     getSongs: null,
@@ -54,6 +57,7 @@ const initialState: SongState = {
     createSong: null,
     updateSong: null,
     deleteSong: null,
+    seedSongs: null,
   },
 };
 
@@ -67,6 +71,7 @@ const songsSlice = createSlice({
     ...songDeleteReducers,
     ...pageParamReducers,
     ...filterReducers,
+    ...songSeedReducers
   },
 });
 
@@ -90,7 +95,10 @@ export const {
   changePerPage,
   setSearch,
   setSort,
-  resetFilters
+  resetFilters,
+  seedSongs,
+  seedSongsSuccess,
+  seedSongsFailure,
 } = songsSlice.actions;
 
 export default songsSlice.reducer;

@@ -202,3 +202,29 @@ export const filterReducers = {
     state.errors.getSongs = null;
   },
 };
+
+export const songSeedReducers = {
+  seedSongs: (state: SongState) => {
+    state.status.seedSongs = "loading";
+    state.errors.seedSongs = null;
+  },
+  seedSongsSuccess: (
+    state: SongState,
+    { payload: { toastId } }: PayloadAction<{ toastId?: string | number }>
+  ) => {
+    state.status.seedSongs = "success";
+
+    updateToastToSuccess("Songs seeded successfully", toastId);
+  },
+  seedSongsFailure: (
+    state: SongState,
+    {
+      payload: { message, toastId },
+    }: PayloadAction<{ message: string; toastId?: string | number }>
+  ) => {
+    state.status.seedSongs = "error";
+    state.errors.seedSongs = message;
+
+    updateToastToError(message, toastId);
+  },
+};

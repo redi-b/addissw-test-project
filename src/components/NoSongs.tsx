@@ -2,6 +2,7 @@ import { RootState } from "@/store";
 import styled from "@emotion/styled";
 import { Music } from "lucide-react";
 import { useSelector } from "react-redux";
+import SeedButton from "./SeedButton";
 
 const NoSongsContainer = styled.div`
   display: flex;
@@ -30,6 +31,10 @@ const IconWrapper = styled.div`
 `;
 
 const NoSongsContent = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.75rem;
   text-align: center;
 `;
 
@@ -46,14 +51,14 @@ const NoSongsMessage = styled.p`
   margin: 0.5rem 0 0;
   text-overflow: ellipsis;
   overflow: hidden;
-  max-width: 300px;
+  max-width: 360px;
 `;
 
 export default function NoSongs() {
   const search = useSelector((state: RootState) => state.songs.search);
 
   const isSearching = search && search.trim() !== "";
-  
+
   return (
     <NoSongsContainer role="alert">
       <IconWrapper>
@@ -64,8 +69,10 @@ export default function NoSongs() {
         <NoSongsMessage>
           {isSearching
             ? `No songs match your search for "${search}".`
-            : "Looks like your song collection is empty. Add a new song to get started!"}
+            : "Looks like your song collection is empty. \
+               Add a new song or seed the database to get started!"}
         </NoSongsMessage>
+        {!isSearching && <SeedButton />}
       </NoSongsContent>
     </NoSongsContainer>
   );
