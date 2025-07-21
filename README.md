@@ -101,6 +101,7 @@ The backend is a lightweight Node.js/Express server hosted on Heroku, providing 
 | GET    | `/`                     | Retrieve paginated list of songs |
 | GET    | `/:id`                  | Retrieve a single song by ID    |
 | POST   | `/`                     | Create a new song               |
+| POST   | `/seed`                 | Seed database with songs        |
 | PUT    | `/:id`                  | Update an existing song         |
 | DELETE | `/:id`                  | Delete a song                   |
 
