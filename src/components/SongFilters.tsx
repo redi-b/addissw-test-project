@@ -7,9 +7,11 @@ import { ChevronUp, ChevronDown, X } from "lucide-react";
 
 const FilterWrapper = styled.div`
   display: flex;
+  align-items: center;
+  justify-content: center;
   flex-wrap: wrap;
-  gap: ${({ theme }) => theme.spacing.md};
-  margin-bottom: ${({ theme }) => theme.spacing.md};
+  gap: ${({ theme }) => theme.spacing.sm};
+  margin-top: ${({ theme }) => theme.spacing.md};
   align-items: center;
 `;
 
@@ -61,6 +63,12 @@ const ClearButton = styled.button`
     box-shadow: 0 0 0 2px ${({ theme }) => theme.colors.ring};
     border-radius: 4px;
   }
+`;
+
+const SortWrapper = styled.div`
+  display: flex;
+  align-items: center;
+  gap: ${({ theme }) => theme.spacing.sm};
 `;
 
 const Select = styled.select`
@@ -174,35 +182,37 @@ const SongFilters = () => {
             value={search ?? ""}
             onChange={handleSearchChange}
           />
-          <ClearButton
-            onClick={handleClearSearch}
-            title="Clear search"
-          >
+          <ClearButton onClick={handleClearSearch} title="Clear search">
             <X size={20} />
           </ClearButton>
         </InputWrapper>
       </Tooltip>
 
-      <Select
-        value={sortBy ?? ""}
-        onChange={handleSortByChange}
-      >
-        <option value="" disabled>
-          Sort By
-        </option>
-        <option value="title">Title</option>
-        <option value="artist">Artist</option>
-        <option value="album">Album</option>
-        <option value="year">Year</option>
-      </Select>
+      <SortWrapper>
+        <Select value={sortBy ?? ""} onChange={handleSortByChange}>
+          <option value="" disabled>
+            Sort By
+          </option>
+          <option value="title">Title</option>
+          <option value="artist">Artist</option>
+          <option value="album">Album</option>
+          <option value="year">Year</option>
+        </Select>
 
-      <SortOrderButton
-        onClick={handleSortOrderToggle}
-        aria-pressed={sortOrder === "desc"}
-        title={`Sort order: ${sortOrder === "asc" ? "Ascending" : "Descending"}`}
-      >
-        {sortOrder === "asc" ? <ChevronUp size={24} /> : <ChevronDown size={24} />}
-      </SortOrderButton>
+        <SortOrderButton
+          onClick={handleSortOrderToggle}
+          aria-pressed={sortOrder === "desc"}
+          title={`Sort order: ${
+            sortOrder === "asc" ? "Ascending" : "Descending"
+          }`}
+        >
+          {sortOrder === "asc" ? (
+            <ChevronUp size={24} />
+          ) : (
+            <ChevronDown size={24} />
+          )}
+        </SortOrderButton>
+      </SortWrapper>
     </FilterWrapper>
   );
 };
