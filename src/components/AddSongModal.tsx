@@ -1,9 +1,12 @@
-import { useState } from "react";
-import { Modal } from "@/components/ui/modal/Modal";
-import CreateSongForm from "./CreateSongForm";
-import { Button } from "@/components/ui/Button";
+import { useState, lazy, Suspense } from "react";
 import { css } from "@emotion/react";
 import { Plus } from "lucide-react";
+
+import { Modal } from "@/components/ui/modal/Modal";
+import { Button } from "@/components/ui/Button";
+import FormSkeleton from "@/components/FormSkeleton";
+
+const CreateSongForm = lazy(() => import("@/components/CreateSongForm"));
 
 const AddSongModal = () => {
   const [open, setOpen] = useState(false);
@@ -31,7 +34,9 @@ const AddSongModal = () => {
         title="Add New Song"
         showCloseButton
       >
-        <CreateSongForm />
+        <Suspense fallback={<FormSkeleton />}>
+          <CreateSongForm />
+        </Suspense>
       </Modal>
     </>
   );

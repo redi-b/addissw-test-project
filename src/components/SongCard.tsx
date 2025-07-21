@@ -1,13 +1,16 @@
-import { useState } from "react";
-import styled from "@emotion/styled";
+import { Suspense, useState, lazy } from "react";
+import { useDispatch } from "react-redux";
 import { Edit2, Trash2 } from "lucide-react";
-import { Button } from "@/components/ui/Button";
+import styled from "@emotion/styled";
+
 import { Song } from "@/types";
 import { AppDispatch } from "@/store";
-import { useDispatch } from "react-redux";
-import { Modal } from "./ui/modal/Modal";
-import EditSongForm from "./EditSongForm";
 import { deleteSong } from "@/store/slices/songsSlice";
+import { Button } from "@/components/ui/Button";
+import { Modal } from "@/components/ui/modal/Modal";
+import FormSkeleton from "@/components/FormSkeleton";
+
+const EditSongForm = lazy(() => import("@/components/EditSongForm"));
 
 type SongCardProps = {
   song: Song;
@@ -122,7 +125,9 @@ export default function SongCard({ song }: SongCardProps) {
         title="Edit Song"
         showCloseButton
       >
-        <EditSongForm song={song} />
+        <Suspense fallback={<FormSkeleton />}>
+          <EditSongForm song={song} />
+        </Suspense>
       </Modal>
     </Card>
   );
