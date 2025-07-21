@@ -10,6 +10,7 @@ import { useSearchParams } from "react-router";
 import { Header } from "@/components/Header";
 import SongCardSkeleton from "@/components/SongCardSkeleton";
 import ErrorCard from "@/components/ErrorCard";
+import NoSongs from "@/components/NoSongs";
 
 const Container = styled.div`
   max-width: 960px;
@@ -83,7 +84,7 @@ const HomePage = () => {
 
       <Container>
         {songs.length === 0 ? (
-          <p>No songs found.</p>
+          <NoSongs />
         ) : (
           <div>
             <CardList>
