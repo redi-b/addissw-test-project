@@ -31,7 +31,6 @@ const Input = styled.input`
   color: ${({ theme }) => theme.colors.foreground};
   width: 320px;
   height: 2.25rem;
-  transition: border-color 0.2s;
 
   &:focus {
     outline: none;
@@ -98,14 +97,8 @@ const SortOrderButton = styled.button`
   justify-content: center;
   cursor: pointer;
   color: ${({ theme }) => theme.colors.foreground};
-  transition: background 0.2s ease, border-color 0.2s ease, color 0.2s ease;
   height: 2.25rem;
   width: 2.25rem;
-
-  &:hover {
-    background: ${({ theme }) => theme.colors.card.hover};
-    border-color: ${({ theme }) => theme.colors.primary.focus};
-  }
 
   &:focus {
     outline: none;
