@@ -3,6 +3,7 @@ import { Sun, Moon, Monitor, Check } from "lucide-react";
 
 import { ThemeMode, useThemeMode } from "@/contexts/ThemeContext";
 import * as Dropdown from "@/components/ui/Dropdown";
+import { ActionButton } from "@/components/ui/Button";
 
 const themeOptions = [
   { name: "System", value: "system", icon: <Monitor size={18} /> },
@@ -19,32 +20,10 @@ const ThemeSwitcher = () => {
   return (
     <Dropdown.Root>
       <Dropdown.Trigger asChild>
-        <button
-          css={css`
-            cursor: pointer;
-            padding: ${theme.spacing.sm} ${theme.spacing.md};
-            background-color: ${theme.colors.secondary.background};
-            color: ${theme.colors.secondary.foreground};
-            border: none;
-            border-radius: ${theme.borderRadius.full};
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            outline: none;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: ${theme.spacing.sm};
-            font-weight: 700;
-
-            &:hover {
-              background-color: ${theme.colors.secondary.hover};
-            }
-          `}
-        >
+        <ActionButton>
           {activeIcon}
           <span>Select Theme</span>
-        </button>
+        </ActionButton>
       </Dropdown.Trigger>
 
       <Dropdown.Portal>

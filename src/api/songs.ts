@@ -8,7 +8,8 @@ if (!BASE_API_URL) {
 
 export const fetchSongs = async (page = 1, perPage = 5): Promise<SongsData> => {
   const res = await fetch(
-    `${BASE_API_URL}/songs?page=${page}&pageSize=${perPage}`
+    `${BASE_API_URL}/songs?page=${page}&pageSize=${perPage}`,
+    { credentials: "include" }
   );
 
   const data = await res.json();
@@ -41,6 +42,7 @@ export const postSong = async (song: CreateSongPayload): Promise<Song> => {
       "Content-Type": "application/json",
     },
     body: JSON.stringify(song),
+    credentials: "include",
   });
 
   const data = await res.json();
@@ -66,6 +68,7 @@ export const updateSong = async (
       "Content-Type": "application/json",
     },
     body: JSON.stringify(songInfo),
+    credentials: "include",
   });
 
   const data = await res.json();
@@ -86,6 +89,7 @@ export const updateSong = async (
 export const deleteSong = async (id: string): Promise<{ id: string }> => {
   const res = await fetch(`${BASE_API_URL}/songs/${id}`, {
     method: "DELETE",
+    credentials: "include",
   });
 
   if (!res.ok) {
@@ -103,6 +107,7 @@ export const deleteSong = async (id: string): Promise<{ id: string }> => {
 export const seedSongs = async (): Promise<void> => {
   const res = await fetch(`${BASE_API_URL}/songs/seed`, {
     method: "POST",
+    credentials: "include",
   });
 
   if (!res.ok) {

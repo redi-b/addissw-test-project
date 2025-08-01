@@ -2,9 +2,10 @@ import styled from "@emotion/styled";
 import { Outlet } from "react-router";
 import ThemeSwitcher from "@/components/ThemeSwitcher";
 import { Music } from "lucide-react";
-import { css, useTheme } from "@emotion/react";
+import { useTheme } from "@emotion/react";
 import { Toaster } from "sonner";
 import { useThemeMode } from "@/contexts/ThemeContext";
+import LogoutButton from "@/components/LogoutButton";
 
 const Wrapper = styled.div`
   background: ${({ theme }) => theme.colors.background};
@@ -55,6 +56,12 @@ const Brand = styled.div`
   }
 `;
 
+const Actions = styled.div`
+  display: flex;
+  align-items: center;
+  gap: ${({ theme }) => theme.spacing.sm};
+`;
+
 const AppLayout = () => {
   const theme = useTheme();
   const { themeMode } = useThemeMode();
@@ -66,7 +73,10 @@ const AppLayout = () => {
           <Music />
           <h1>Song Manager</h1>
         </Brand>
-        <ThemeSwitcher />
+        <Actions>
+          <ThemeSwitcher />
+          <LogoutButton />
+        </Actions>
       </Navbar>
       <Outlet />
       <Toaster

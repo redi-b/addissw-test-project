@@ -25,3 +25,8 @@ export type UpdateSongPayload = {
   album?: string;
   year?: number;
 };
+
+export type UserData = {
+  id: string;
+  username: string;
+};

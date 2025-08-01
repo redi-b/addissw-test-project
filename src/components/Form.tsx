@@ -62,3 +62,55 @@ export const Button = styled.button`
     cursor: not-allowed;
   }
 `;
+
+export const FormCard = styled.div`
+  background: ${({ theme }) => theme.colors.card.background};
+  padding: 1rem 1.5rem;
+  border-radius: ${({ theme }) => theme.borderRadius.xl};
+  box-shadow: ${({ theme }) => theme.shadows.lg};
+  min-width: 340px;
+  max-width: 400px;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+`;
+
+export const FormIcon = styled.div`
+  margin: 1rem 0;
+  display: flex;
+  justify-content: center;
+
+  svg {
+    width: 32px;
+    height: 32px;
+
+    @media (max-width: ${({ theme }) => theme.breakpoints.sm}) {
+      width: 24px;
+      height: 24px;
+    }
+  }
+`;
+
+export const FormFooter = styled.p`
+  font-size: ${({ theme }) => theme.typography.fontSize.sm};
+  color: ${({ theme }) => theme.colors.muted.foreground};
+  text-align: center;
+  margin-top: 1.5rem;
+
+  a {
+    color: ${({ theme }) => theme.colors.primary.foreground};
+    text-decoration: none;
+
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+`;
+
+export const FormError = styled.p`
+  color: ${({ theme }) => theme.colors.destructive.background};
+  font-size: 0.85rem;
+  margin-top: -0.5rem;
+  margin-bottom: 0.75rem;
+`;

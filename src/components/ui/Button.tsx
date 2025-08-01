@@ -39,3 +39,32 @@ export const Button = styled.button<Props>(
     };
   }
 );
+
+export const ActionButton = styled.button`
+  cursor: pointer;
+  padding: ${({ theme }) => theme.spacing.sm} ${({ theme }) => theme.spacing.md};
+  background-color: ${({ theme }) => theme.colors.secondary.background};
+  color: ${({ theme }) => theme.colors.secondary.foreground};
+  border: none;
+  border-radius: ${({ theme }) => theme.borderRadius.full};
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  outline: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: ${({ theme }) => theme.spacing.sm};
+  font-weight: 700;
+  transition: background-color 0.2s;
+
+  &:hover {
+    background-color: ${({ theme }) => theme.colors.secondary.hover};
+  }
+
+  @media (max-width: ${({ theme }) => theme.breakpoints.sm}) {
+    span {
+      display: none;
+    }
+  }
+`;
