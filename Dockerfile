@@ -1,4 +1,4 @@
-FROM node:24-alpine as build
+FROM node:24-alpine as builder
 
 WORKDIR /app
 
@@ -6,6 +6,10 @@ COPY package*.json ./
 RUN npm install
 
 COPY . .
+
+ARG BASE_API_URL=http://localhost:3030/api
+ENV BASE_API_URL=$BASE_API_URL
+
 RUN npm run build
 
 FROM nginx:alpine
@@ -13,12 +17,9 @@ FROM nginx:alpine
 # Remove default nginx static files
 RUN rm -rf /usr/share/nginx/html/*
 
-# Copy built files from previous stage
-COPY --from=build /app/config/nginx.conf /etc/nginx/conf.d/default.conf
-COPY --from=build /app/dist /usr/share/nginx/html
-
-# Copy custom nginx config (optional)
-# COPY nginx.conf /etc/nginx/nginx.conf
+# Copy built files and config from previous stage
+COPY --from=builder /app/config/nginx.conf /etc/nginx/conf.d/default.conf
+COPY --from=builder /app/dist /usr/share/nginx/html
 
 EXPOSE 80
 
