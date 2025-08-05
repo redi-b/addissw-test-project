@@ -1,10 +1,11 @@
 import { useAuth } from "@/contexts/AuthContext";
 import { LogOut } from "lucide-react";
-import { ActionButton } from "@/components/ui/Button";
+import { ActionButton, ActionButtonSkeleton } from "@/components/ui/Button";
 
 export default function LogoutButton() {
-  const { isAuthenticated, user, logout } = useAuth();
+  const { isAuthenticated, loading, user, logout } = useAuth();
 
+  if (loading) return <ActionButtonSkeleton />
   if (!isAuthenticated) return null;
 
   return (

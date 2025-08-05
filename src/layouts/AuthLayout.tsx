@@ -11,7 +11,13 @@ const AuthContainer = styled.div`
 `;
 
 const AuthLayout = () => {
-  const { isAuthenticated } = useAuth();
+  const { isAuthenticated, loading } = useAuth();
+
+  if (loading) {
+    return (
+      <div style={{ textAlign: "center", marginTop: "20px" }}>Loading...</div>
+    );
+  }
 
   if (isAuthenticated) return <Navigate to="/" replace />
 

@@ -1,3 +1,4 @@
+import { keyframes } from "@emotion/react";
 import styled from "@emotion/styled";
 
 type Variant = "primary" | "secondary" | "destructive";
@@ -66,5 +67,36 @@ export const ActionButton = styled.button`
     span {
       display: none;
     }
+  }
+`;
+
+const shimmer = keyframes`
+  0% {
+    background-position: -200px 0;
+  }
+  100% {
+    background-position: 200px 0;
+  }
+`;
+
+export const ActionButtonSkeleton = styled.div`
+  padding: ${({ theme }) => theme.spacing.sm} ${({ theme }) => theme.spacing.md};
+  border-radius: ${({ theme }) => theme.borderRadius.full};
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 80px;
+  height: 36px;
+  background: linear-gradient(
+    90deg,
+    ${({ theme }) => theme.colors.skeleton.base} 25%,
+    ${({ theme }) => theme.colors.skeleton.highlight} 50%,
+    ${({ theme }) => theme.colors.skeleton.base} 75%
+  );
+  background-size: 200px 100%;
+  animation: ${shimmer} 1.5s infinite;
+
+  @media (max-width: ${({ theme }) => theme.breakpoints.sm}) {
+    width: 36px; /* Smaller width for mobile, mimicking icon-only button */
   }
 `;
