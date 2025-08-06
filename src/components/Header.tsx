@@ -2,6 +2,8 @@ import { css } from "@emotion/react";
 import styled from "@emotion/styled";
 import AddSongModal from "./AddSongModal";
 import SongFilters from "./SongFilters";
+import { Button } from "./ui/Button";
+import { useNavigate } from "react-router";
 
 const HeaderContainer = styled.div`
   position: sticky;
@@ -26,7 +28,15 @@ const Title = styled.h2`
   font-weight: 600;
 `;
 
+const HeaderActions = styled.div`
+  display: flex;
+  gap: ${({ theme }) => theme.spacing.sm};
+  align-items: center;
+  margin-bottom: ${({ theme }) => theme.spacing.md};
+`;
+
 export const Header = () => {
+  const navigate = useNavigate();
   return (
     <HeaderContainer>
       <HeaderContent>
@@ -38,7 +48,20 @@ export const Header = () => {
           `}
         >
           <Title>Songs</Title>
-          <AddSongModal />
+          <HeaderActions>
+            <AddSongModal />
+            <Button
+              variant="secondary"
+              css={css`
+                height: 36px;
+              `}
+              onClick={() => {
+                navigate("/analytics");
+              }}
+            >
+              View Analytics
+            </Button>
+          </HeaderActions>
         </div>
 
         <div

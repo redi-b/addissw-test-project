@@ -30,3 +30,29 @@ export type UserData = {
   id: string;
   username: string;
 };
+
+export type ArtistCount = {
+  artist: string;
+  count: number;
+};
+
+export type YearCount = {
+  year: number;
+  count: number;
+};
+
+export type MonthlyCount = {
+  year: number;
+  month: number;
+  count: number;
+};
+
+export type AlbumCount = {
+  album: string;
+  count: number;
+};
+
+export type SongsPerArtistPayload = ArtistCount[];
+export type SongsPerYearPayload = YearCount[];
+export type MonthlySongCreationPayload = MonthlyCount[];
+export type TopAlbumsPayload = AlbumCount[];

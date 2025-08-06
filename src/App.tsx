@@ -7,6 +7,7 @@ import ProtectedLayout from "./layouts/ProtectedLayout";
 import AuthLayout from "./layouts/AuthLayout";
 import SigninPage from "./pages/SigninPage";
 import SignupPage from "./pages/SignupPage";
+import AnalyticsPage from "./pages/AnalyticsPage";
 
 const App = () => {
   return (
@@ -19,6 +20,7 @@ const App = () => {
           </Route>
           <Route element={<ProtectedLayout />}>
             <Route path="/" element={<HomePage />} />
+            <Route path="/analytics" element={<AnalyticsPage />} />
           </Route>
           <Route path="*" element={<NotFoundPage />} />
         </Route>

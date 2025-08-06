@@ -6,6 +6,7 @@ import { useTheme } from "@emotion/react";
 import { Toaster } from "sonner";
 import { useThemeMode } from "@/contexts/ThemeContext";
 import LogoutButton from "@/components/LogoutButton";
+import { useAuth } from "@/contexts/AuthContext";
 
 const Wrapper = styled.div`
   background: ${({ theme }) => theme.colors.background};
@@ -30,6 +31,7 @@ const Brand = styled.div`
   display: flex;
   align-items: center;
   gap: ${({ theme }) => theme.spacing.md};
+  cursor: pointer;
 
   h1 {
     font-size: ${({ theme }) => theme.typography.fontSize["2xl"]};
@@ -66,10 +68,16 @@ const AppLayout = () => {
   const theme = useTheme();
   const { themeMode } = useThemeMode();
 
+  const { isAuthenticated } = useAuth();
+
   return (
     <Wrapper>
       <Navbar>
-        <Brand>
+        <Brand
+          onClick={() => {
+            isAuthenticated && (window.location.href = "/");
+          }}
+        >
           <Music />
           <h1>Song Manager</h1>
         </Brand>
