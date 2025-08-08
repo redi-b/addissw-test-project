@@ -44,7 +44,7 @@ const PIE_COLORS = [
 ];
 
 export default function TopAlbumsChart({ data, theme }: Props) {
-  const transformed = data.slice(0, 6).map((item) => ({
+  const transformed = data.map((item) => ({
     ...item,
     album: item.album || "No Album",
   }));

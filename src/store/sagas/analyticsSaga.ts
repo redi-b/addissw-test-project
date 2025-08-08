@@ -19,8 +19,12 @@ import {
   getMonthlySongCreationApi,
   getTopAlbumsApi,
 } from "@/api/analytics";
-import { SagaIterator } from "redux-saga";
-import { MonthlySongCreationPayload, SongsPerArtistPayload, SongsPerYearPayload, TopAlbumsPayload } from "@/types";
+import {
+  MonthlySongCreationPayload,
+  SongsPerArtistPayload,
+  SongsPerYearPayload,
+  TopAlbumsPayload,
+} from "@/types";
 
 function* handleFetchSongsPerArtist() {
   try {
@@ -48,7 +52,9 @@ function* handleFetchSongsPerYear() {
 
 function* handleFetchMonthlySongCreation() {
   try {
-    const result: MonthlySongCreationPayload = yield call(getMonthlySongCreationApi);
+    const result: MonthlySongCreationPayload = yield call(
+      getMonthlySongCreationApi
+    );
     yield put(fetchMonthlySongCreationSuccess(result));
   } catch (err: any) {
     yield put(
